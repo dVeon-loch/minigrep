@@ -13,7 +13,19 @@ impl Config {
 
         let query = args[1].clone();
         let file_path = args[2].clone();
-        let ignore_case = env::var("IGNORE_CASE").is_ok();
+
+        let ignore_case: bool;
+        if args.len() > 3 {
+            if args.contains(&String::from("--nocase")) {
+                ignore_case = true;
+            } else if args.contains(&String::from("--case")) {
+                ignore_case = false;
+            } else {
+                ignore_case = env::var("IGNORE_CASE").is_ok();
+            }
+        } else {
+            ignore_case = env::var("IGNORE_CASE").is_ok();
+        }
 
         Ok(Config {
             query,
